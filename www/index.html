@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'"/>
+
+    <title></title>
+
+
+    <!-- compiled css output -->
+    <link href="css/ionic.app.css" rel="stylesheet">
+
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+    <script type="text/javascript" src="lib/ngCordova/dist/ng-cordova.min.js"></script>
+    <script src="cordova.js"></script>
+    <script src="js/app.js"></script>
+  </head>
+  <body ng-app="starter" ng-controller="AppCtrl">
+    <ion-pane>
+      <ion-header-bar class="bar-positive">
+        <h1 class="title">Eranut</h1>
+
+        <button class="button button-positive" ng-click="openModal()" ng-show="conectado">
+          <i class="icon ion-gear-b"></i>
+        </button>
+      
+      </ion-header-bar>
+      
+      <ion-content>
+        <div class="row text-center">
+          <div class="col">
+            <img ng-src="img/logo.jpg" width="100">
+          </div>
+        </div>
+
+        <div ng-show="habilitado" ng-hide="conectado"  class="padding">
+          Selecione o aparelho.
+          <ion-list>
+            <ion-radio ng-model="data.bluetooth" ng-value="blue.address" ng-repeat="blue in bluetooths">{{blue.name + ' - ' + blue.address}} </ion-radio>
+          </ion-list>
+          <button class="button button-balanced button-block icon-right ion-bluetooth" ng-click="conectarBluetooth(data)">Conectar!</button>
+        </div>
+
+        <div class="card" ng-hide="habilitado" class="padding">
+          <div class="item item-text-wrap">
+            <h4>Bluetooth não conectado, você deve habilitar o bluetooth primeiro antes de iniciar a usar o programa.</h4>
+          </div>
+        </div>
+
+
+        <div ng-show="conectado">
+          <div class="row">
+            <div class="col col-offset-67">
+              <button class="button button-light button-block button-small icon-left  ion-android-sync">Sincronizar</button>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <form name="update">
+             <!--    <ion-toggle ng-repeat="dia in diasSemana" ng-model="dia.checked" toggle-class="toggle-calm">{{dia.nome}} {{dia.checked}}</ion-toggle> -->
+
+                <ul class="list">
+
+                <li class="item item-toggle">
+                   Segunda-Feira
+                   <label class="toggle toggle-positive">
+                     <input type="checkbox" ng-model="dia.segunda">
+                     <div class="track">
+                       <div class="handle"></div>
+                     </div>
+                   </label>
+                </li>
+
+                <li class="item item-toggle">
+                   Terça-Feira
+                   <label class="toggle toggle-positive">
+                     <input type="checkbox" ng-model="dia.terca">
+                     <div class="track">
+                       <div class="handle"></div>
+                     </div>
+                   </label>
+                </li>
+
+                <li class="item item-toggle">
+                   Quarta-Feira
+                   <label class="toggle toggle-positive">
+                     <input type="checkbox" ng-model="dia.quarta">
+                     <div class="track">
+                       <div class="handle"></div>
+                     </div>
+                   </label>
+                </li>
+
+                <li class="item item-toggle">
+                   Quinta-Feira
+                   <label class="toggle toggle-positive">
+                     <input type="checkbox" ng-model="dia.quinta">
+                     <div class="track">
+                       <div class="handle"></div>
+                     </div>
+                   </label>
+                </li>
+
+                <li class="item item-toggle">
+                   Sexta-Feira
+                   <label class="toggle toggle-positive">
+                     <input type="checkbox" ng-model="dia.sexta">
+                     <div class="track">
+                       <div class="handle"></div>
+                     </div>
+                   </label>
+                </li>
+
+                <li class="item item-toggle">
+                   Sabado
+                   <label class="toggle toggle-positive">
+                     <input type="checkbox" ng-model="dia.sabado">
+                     <div class="track">
+                       <div class="handle"></div>
+                     </div>
+                   </label>
+                </li>
+
+                <li class="item item-toggle">
+                   Domingo
+                   <label class="toggle toggle-positive">
+                     <input type="checkbox" ng-model="dia.domingo">
+                     <div class="track">
+                       <div class="handle"></div>
+                     </div>
+                   </label>
+                </li>
+
+
+              </ul>
+
+                <label class="item item-input item-select">
+                  <div class="input-label">
+                    Intervalo
+                  </div>
+                  <select ng-model="dia.intervalo">
+                    <option selected>Selecione</option>
+                    <option ng-repeat="i in intervalos" value="{{i.value}}">{{i.nome}}</option>
+                  </select>
+                </label>
+
+                <div class="">
+                  <button class="button button-block button-calm button icon-left ion-ios-upload-outline" ng-click="gravar(dia)">Gravar</button>
+                </div>
+              </form>
+            </div>
+            
+          </div>
+        </div>
+
+
+
+
+      </ion-content>
+    </ion-pane>
+
+
+
+    <script id="configuracao.html" type="text/ng-template">
+      <ion-modal-view>
+        <ion-header-bar>
+          <h1 class="title">Configurações</h1>
+                    <button class="button button-positive" ng-click="closeModal()">
+            <i class="icon ion-close-round"></i>
+          </button>
+        </ion-header-bar>
+        
+        <ion-content>
+          <div ng-hide="conectado">
+            <p class="text-center">
+              você não está conectado a nenhum aparelho para poder configura-lo.
+                <button class="button button-full button-light" ng-click="closeModal()">
+                  Fechar
+                <i class="icon ion-close-round"></i>
+                </button>   
+            </p>
+          </div>
+          
+          <div ng-show="conectado">
+
+            <p class="text-center">
+               <button class="button button-full button-light" ng-click="">
+                19/02/2016 22:12
+                <i class="icon ion-refresh"></i>
+               </button>   
+            </p>
+            <label class="item item-input item-select">
+              <div class="input-label">
+                Dia
+              </div>
+              <select ng-model="config.dia" ng-options="dia.value as dia.nome for dia in dias">
+                <option value="">Selecione</option>
+              </select>
+              {{config.dia}}
+            </label>
+            
+            <label class="item item-input item-select">
+              <div class="input-label">
+                Mês
+              </div>
+              <select ng-model="config.mes" ng-options="mes.value as mes.nome for mes in meses">
+                <option value="">Selecione</option>
+              </select>
+              {{config.mes}}
+            </label>
+            
+            <label class="item item-input item-select">
+              <div class="input-label">
+                Ano
+              </div>
+              <select ng-model="config.ano" ng-options="ano.ano as ano.ano for ano in anos">
+                <option value="">Selecione</option>
+                
+              </select>
+              {{config.ano}}
+            </label>
+            
+
+            <label class="item item-input item-select">
+              <div class="input-label">
+                Hora
+              </div>
+              <select ng-model="config.hora" ng-options="hora.hora as hora.hora for hora in horas">
+                <option value="">Selecione</option>
+              </select>
+              {{config.hora}}
+            </label>
+            
+            <label class="item item-input item-select">
+              <div class="input-label">
+                Minuto
+              </div>
+              <select ng-model="config.minuto" ng-options="minuto.minuto as minuto.minuto for minuto in minutos">
+                <option value="">Selecione</option>
+              </select>
+              {{config.minuto}}
+            </label>
+            
+
+            <button class="button button-full button-positive button icon-right ion-compose" ng-click="gravarHora(config)">Gravar</button>   
+          </div>
+        </ion-content>
+      </ion-modal-view>
+    </script>
+
+
+
+  </body>
+</html>

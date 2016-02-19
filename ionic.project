@@ -1,0 +1,12 @@
+{
+  "name": "Eranut",
+  "app_id": "2062b211",
+  "gulpStartupTasks": [
+    "sass",
+    "watch"
+  ],
+  "watchPatterns": [
+    "www/**/*",
+    "!www/lib/**/*"
+  ]
+}
